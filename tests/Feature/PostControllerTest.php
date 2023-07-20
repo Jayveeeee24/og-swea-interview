@@ -19,8 +19,6 @@ class PostControllerTest extends TestCase
      */
     public function testIndex()
     {
-        // $post1 = Post::factory()->create();
-        // $post2 = Post::factory()->create();
 
         $user = User::factory()->create();
 
@@ -54,18 +52,6 @@ class PostControllerTest extends TestCase
 
         $response->assertJson([
             [
-                'id' => $post1->id,
-                'user_id' => $post1->user_id,
-                'body' => $post1->body,
-                'user' => [
-                    'id' => $post1->user->id,
-                    'name' => $post1->user->name,
-                    'email' => $post1->user->email,
-                    'created_at' => $post1->user->created_at->toISOString(),
-                    'updated_at' => $post1->user->updated_at->toISOString(),
-                ],
-            ],
-            [
                 'id' => $post2->id,
                 'user_id' => $post2->user_id,
                 'body' => $post2->body,
@@ -77,6 +63,22 @@ class PostControllerTest extends TestCase
                     'updated_at' => $post2->user->updated_at->toISOString(),
                 ],
             ],
+            [
+                'id' => $post1->id,
+                'user_id' => $post1->user_id,
+                'body' => $post1->body,
+                'user' => [
+                    'id' => $post1->user->id,
+                    'name' => $post1->user->name,
+                    'email' => $post1->user->email,
+                    'created_at' => $post1->user->created_at->toISOString(),
+                    'updated_at' => $post1->user->updated_at->toISOString(),
+                ],
+            ],
+            
         ]);
+
+        $sortPostDesc = Post::orderByDesc('id')->get();
+        $response->assertJson($sortPostDesc->toArray());
     }
 }
